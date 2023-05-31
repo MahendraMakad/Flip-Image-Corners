@@ -10,7 +10,6 @@ var ctx = canvas.getContext("2d");
 
 
 var container = document.getElementById("imageContainer");
-var slider = document.querySelector('#radius-slider');
 
 
 checkbox1.addEventListener("change",function() {
@@ -25,22 +24,38 @@ checkbox2.addEventListener("change",function() {
   }
 });
 
+function flipCanvasVertically() {
+  // Create a temporary canvas to store the flipped image
+  var tempCanvas = document.createElement("canvas");
+  tempCanvas.width = canvas.width;
+  tempCanvas.height = canvas.height;
+  var tempCtx = tempCanvas.getContext("2d");
+  // Flip the image vertically
+  tempCtx.scale(1, -1);
+  tempCtx.translate(0, -canvas.height);
+  tempCtx.drawImage(canvas, 0, 0);
+  // Replace the existing canvas with the flipped image
+  canvas.width = tempCanvas.width;
+  canvas.height = tempCanvas.height;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(tempCanvas, 0, 0);
+}
 
-// Flip the canvas horizontally with an image stored in it
 function flipCanvasHorizontally() {
-  // Save the current state of the context
-  ctx.save();
-
-  // Flip the canvas horizontally
-  ctx.scale(-1, 1);
-  // Move the flipped canvas back into view
-  ctx.translate(-canvas.width, 0);
-
-  // Draw the image on the flipped canvas
-  ctx.drawImage(canvas, 0, 0);
-
-  // Restore the original state of the context
-  ctx.restore();
+  // Create a temporary canvas to store the flipped image
+  var tempCanvas = document.createElement("canvas");
+  tempCanvas.width = canvas.width;
+  tempCanvas.height = canvas.height;
+  var tempCtx = tempCanvas.getContext("2d");
+  // Flip the image horizontally
+  tempCtx.scale(-1, 1);
+  tempCtx.translate(-canvas.width, 0);
+  tempCtx.drawImage(canvas, 0, 0);
+  // Replace the existing canvas with the flipped image
+  canvas.width = tempCanvas.width;
+  canvas.height = tempCanvas.height;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(tempCanvas, 0, 0);
 }
 
 
@@ -111,50 +126,15 @@ function downloadImage(event) {
   var downloadLink = document.createElement('a');
   if (event.target.id === 'imageJPG') {
     downloadLink.download = 'my-image.jpg';
-    downloadLink.href = modifiedCanvas.toDataURL('image/jpeg');
+    downloadLink.href = modifiedCanvas.toDataURL('image/jpeg',0.9);
   } else if (event.target.id === 'imagePNG') {
     downloadLink.download = 'my-image.png';
-    downloadLink.href = modifiedCanvas.toDataURL('image/png');
+    downloadLink.href = modifiedCanvas.toDataURL('image/png',1);
   }
   downloadLink.click();
-
-
 }
 
 
 
-document.getElementById('invert-btn').addEventListener('click', () => {
-
-   // Save the current state of the context
-   ctx.save();
-
-   // Flip the canvas horizontally
-   ctx.scale(-1, 1);
-   // Move the flipped canvas back into view
-   ctx.translate(-canvas.width, 0);
- 
-   // Draw the image on the flipped canvas
-   ctx.drawImage(canvas, 0, 0);
- 
-   // Restore the original state of the context
-   ctx.restore();
-}
-);
-
-function flipCanvasVertically() {
-  // Save the current state of the context
-  ctx.save();
-
-  // Flip the canvas vertically
-  ctx.scale(1, -1);
-  // Move the flipped canvas back into view
-  ctx.translate(0, -canvas.height);
-
-  // Draw the image on the flipped canvas
-  ctx.drawImage(canvas, 0, 0);
-
-  // Restore the original state of the context
-  ctx.restore();
-}
 
 
